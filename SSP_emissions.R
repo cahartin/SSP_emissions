@@ -73,7 +73,6 @@ historical <- read.csv("C:/Users/chartin/Documents/GitHub/SSP_emissions/rcmip-em
 
 # Gases included in Hector but not RCMIP
 # C2F14
-# HFC4310
 # C2F6
 
 #################################################
