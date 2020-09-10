@@ -1,5 +1,7 @@
-# Process CMIP6 emissions from 
-# https://www.rcmip.org/
+# Process CMIP6 emissions into Hector format
+# Data from https://www.rcmip.org/
+# Accessed 9/3/2020
+
 # CH 09/03/20
 
 library(tidyr)
