@@ -22,7 +22,7 @@ ssps <- read.csv("C:/Users/chartin/Documents/GitHub/SSP_emissions/rcmip-emission
   select(-Model, -Activity_Id) %>% 
   filter(Region == "World" & Mip_Era == "CMIP6") %>% 
   select(-Region, -Mip_Era) %>% 
-  filter(Scenario %in% c( "ssp119", "ssp370", "ssp126", "ssp245","ssp434", "ssp460", "ssp534-over", "ssp580")) %>% 
+  filter(Scenario %in% c( "ssp119", "ssp370", "ssp126", "ssp245","ssp434", "ssp460", "ssp534-over", "ssp585")) %>% 
   filter(Variable %in% c("Emissions|CO2","Emissions|CO2|MAGICC AFOLU", "Emissions|CH4",  "Emissions|N2O", 
                          "Emissions|Sulfur", "Emissions|CO", "Emissions|VOC", "Emissions|NOx", 
                          "Emissions|BC", "Emissions|OC", "Emissions|F-Gases|PFC|CF4", "Emissions|F-Gases|PFC|C2F6", 
@@ -81,6 +81,7 @@ historical <- read.csv("C:/Users/chartin/Documents/GitHub/SSP_emissions/rcmip-em
 
 
 #################################################
+
 # pull out 1 scenario at a time
 ssp119 <- filter(ssps, Scenario == "ssp119") %>% 
   select(-Scenario, -Unit) %>% 
@@ -106,26 +107,78 @@ ssp119 <- filter(ssps, Scenario == "ssp119") %>%
   ## Unit changes
   mutate(ffi_emissions = ((ffi_emissions/1000) *(12/44))) %>%  # Convert from MtCO2 to GtC/year
   mutate(N2O_emissions = ((N2O_emissions * 0.001) *(14.0067/44.0128))) %>%  # convert from ktN2O to GtN
-  mutate(SO2_emissions = ((SO2_emissions * 1000) * (32.01/64.07))) %>%  # convert from MtSO2 to GgS
+  mutate(SO2_emissions = ((SO2_emissions * 1000) * (32.01/64.07)))  # convert from MtSO2 to GgS
   
-  ## save as a csv file
-  write.csv("Github/SSP_emissions/ssp119.csv", row.names = FALSE)
+  cat("; SSP119 emissions \n ; https://www.rcmip.org/ \n ",file="ssp119_emissions.csv")
+  write.table(ssp119, 'ssp119_emissions.csv',sep=",",append=TRUE, row.names=FALSE)
   
 
+###########################
+  scenarios <- c("ssp119", "ssp370", "ssp126", "ssp245","ssp434", "ssp460", "ssp534-over", "ssp585", "historical")
+                      
+  length(scenarios)
+  
+  #################################################
+  
+  #### 245 #####
+  ssp245 <- filter(ssps, Scenario == "ssp245") %>% 
+    select(-Scenario, -Unit) %>% 
+    
+    ## get rid of strings before gas name
+    mutate(Variable=as.character(Variable)) %>%
+    mutate(Variable=(str_replace(Variable, "^.*\\|", ""))) %>% 
+    
+    # add "_emissions" to gas names
+    mutate(Variable=paste0(Variable, "_emissions")) %>% 
+    gather(Date, value, X2015:X2300) %>% 
+    spread(Variable, value) %>% 
+    mutate(Date=(str_replace(Date, "X", ""))) %>% # get rid of X in front of date
+    
+    ## Rename a few columns to match Hector
+    
+    rename("ffi_emissions" = "CO2_emissions") %>% 
+    rename("luc_emissions" = "MAGICC AFOLU_emissions") %>%
+    rename("NMVOC_emissions" = "VOC_emissions") %>% 
+    rename("HFC4310_emissions"="HFC4310mee_emissions") %>% 
+    rename( "SO2_emissions" ="Sulfur_emissions") %>% 
+    
+    ## Unit changes
+    mutate(ffi_emissions = ((ffi_emissions/1000) *(12/44))) %>%  # Convert from MtCO2 to GtC/year
+    mutate(N2O_emissions = ((N2O_emissions * 0.001) *(14.0067/44.0128))) %>%  # convert from ktN2O to GtN
+    mutate(SO2_emissions = ((SO2_emissions * 1000) * (32.01/64.07)))  # convert from MtSO2 to GgS
+  
+  cat(";SSP245 emissions \n ;https://www.rcmip.org/ \n ",file="ssp245_emissions.csv")
+  write.table(ssp245, 'ssp245_emissions.csv',sep=",",append=TRUE, row.names=FALSE)
 
-
-
-
-ssp370 <- filter(ssps, Scenario == "ssp370") %>% 
-  select(-Scenario)
-ssp370 <- as.data.frame(t(as.matrix(ssp370)))
-
-ssp245 <- filter(ssps, Scenario == "ssp245") %>% 
-  select(-Scenario)
-sspp245 <- as.data.frame(t(as.matrix(ssp245)))
-
-ssp434 <- filter(ssps, Scenario == "ssp434")
-ssp460 <- filter(ssps, Scenario == "ssp460")
-ssp534o <- filter(ssps, Scenario == "ssp534-over")
-ssp580 <- filter(ssps, Scenario == "ssp580")
-
+  ######################################################################  
+  
+  #### 585
+  ssp585 <- filter(ssps, Scenario == "ssp585") %>% 
+    select(-Scenario, -Unit) %>% 
+    
+    ## get rid of strings before gas name
+    mutate(Variable=as.character(Variable)) %>%
+    mutate(Variable=(str_replace(Variable, "^.*\\|", ""))) %>% 
+    
+    # add "_emissions" to gas names
+    mutate(Variable=paste0(Variable, "_emissions")) %>% 
+    gather(Date, value, X2015:X2300) %>% 
+    spread(Variable, value) %>% 
+    mutate(Date=(str_replace(Date, "X", ""))) %>% # get rid of X in front of date
+    
+    ## Rename a few columns to match Hector
+    
+    rename("ffi_emissions" = "CO2_emissions") %>% 
+    rename("luc_emissions" = "MAGICC AFOLU_emissions") %>%
+    rename("NMVOC_emissions" = "VOC_emissions") %>% 
+    rename("HFC4310_emissions"="HFC4310mee_emissions") %>% 
+    rename( "SO2_emissions" ="Sulfur_emissions") %>% 
+    
+    ## Unit changes
+    mutate(ffi_emissions = ((ffi_emissions/1000) *(12/44))) %>%  # Convert from MtCO2 to GtC/year
+    mutate(N2O_emissions = ((N2O_emissions * 0.001) *(14.0067/44.0128))) %>%  # convert from ktN2O to GtN
+    mutate(SO2_emissions = ((SO2_emissions * 1000) * (32.01/64.07)))  # convert from MtSO2 to GgS
+  
+  cat(";SSP585 emissions \n ;https://www.rcmip.org/ \n ",file="ssp585_emissions.csv")
+  write.table(ssp585, 'ssp585_emissions.csv',sep=",",append=TRUE, row.names=FALSE)
+  
