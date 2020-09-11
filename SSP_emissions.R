@@ -148,8 +148,9 @@ ssp119 <- filter(ssps, Scenario == "ssp119") %>%
     rename( "SO2_emissions" ="Sulfur_emissions") %>% 
     
     ## Unit changes
-    mutate(ffi_emissions = ((ffi_emissions/1000) *(12/44))) %>%  # Convert from MtCO2 to GtC/year
-    mutate(N2O_emissions = ((N2O_emissions * 0.001) *(14.0067/44.0128))) %>%  # convert from ktN2O to GtN
+    mutate(ffi_emissions = ((ffi_emissions/1000) * (12/44))) %>%  # Convert from MtCO2 to GtC/year
+    mutate(luc_emissions = ((luc_emissions/1000) * (12/44))) %>% 
+    mutate(N2O_emissions = ((N2O_emissions * 0.001) * (14.0067/44.0128))) %>%  # convert from ktN2O to GtN
     mutate(SO2_emissions = ((SO2_emissions * 1000) * (32.01/64.07)))  # convert from MtSO2 to GgS
   
   cat(";SSP585 emissions \n ;https://www.rcmip.org/ \n ",file="ssp585_emissions.csv")
