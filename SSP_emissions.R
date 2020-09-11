@@ -84,7 +84,7 @@ ssp119 <- filter(ssps, Scenario == "ssp119") %>%
   rename( "NOX_emissions" ="NOx_emissions") %>% 
   rename( "halon2402_emissions" ="Halon2402_emissions") %>% 
   rename( "halon1211_emissions" = "Halon1211_emissions") %>% 
-  rename(" halon1301_emissions" = "Halon1301_emissions") %>% 
+  rename("halon1301_emissions" = "Halon1301_emissions") %>% 
 
   ## Unit changes
   mutate(ffi_emissions = ((ffi_emissions/1000) *(12/44))) %>%  # Convert from MtCO2 to GtC/year
@@ -96,6 +96,6 @@ ssp119 <- filter(ssps, Scenario == "ssp119") %>%
     drop_na() # data is every 10 years in future - delete rows w NAs
 
 
-  cat(";SSP119 emissions\n ;https://www.rcmip.org/\n ",file="ssp119_emissions.csv")
+ cat(";SSP119 emissions\n ;https://www.rcmip.org/\n ",file="ssp119_emissions.csv")
   write.table(ssp119, 'ssp119_emissions.csv',sep=",",append=TRUE, row.names=FALSE)
   
