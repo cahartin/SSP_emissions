@@ -12,7 +12,7 @@ setwd("C:/Users/chartin/Documents/GitHub/SSP_emissions/")
 #setwd("C:/Users/13475/Documents/GitHub/SSP_emissions/")
 
 ###########################
-scenarios <- c("ssp119", "ssp370", "ssp126", "ssp245","ssp434", "ssp460", "ssp534-over", "ssp585", "historical")
+scenarios <- c("ssp119", "ssp370", "ssp126", "ssp245","ssp434", "ssp460", "ssp534-over", "ssp585")
 
 ###############################
 
