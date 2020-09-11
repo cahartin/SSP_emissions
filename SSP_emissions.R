@@ -12,7 +12,7 @@ setwd("C:/Users/chartin/Documents/GitHub/SSP_emissions/")
 #setwd("C:/Users/13475/Documents/GitHub/SSP_emissions/")
 
 ###########################
-scenarios <- c("ssp119", "ssp370", "ssp126", "ssp245","ssp434", "ssp460", "ssp534-over", "ssp585")
+scenarios <- c("ssp119", "ssp370", "ssp126", "ssp245","ssp434", "ssp460", "ssp534-over", "ssp585", "historical")
 
 ###############################
 
@@ -91,10 +91,11 @@ ssp119 <- filter(ssps, Scenario == "ssp119") %>%
   mutate(luc_emissions = ((luc_emissions/1000) * (12/44))) %>% 
   mutate(N2O_emissions = ((N2O_emissions * 0.001) *(14.0067/44.0128))) %>%  # convert from ktN2O to GtN
   mutate(SO2_emissions = ((SO2_emissions * 1000) * (32.01/64.07))) %>%   # convert from MtSO2 to GgS
-    
+  mutate(NOX_emissions = (NOX_emissions * (14.0067/44.0128))) %>% 
+  
     drop_na() # data is every 10 years in future - delete rows w NAs
 
 
-  cat("; SSP119 emissions \n ; https://www.rcmip.org/ \n ",file="ssp119_emissions.csv")
+  cat(";SSP119 emissions\n ;https://www.rcmip.org/\n ",file="ssp119_emissions.csv")
   write.table(ssp119, 'ssp119_emissions.csv',sep=",",append=TRUE, row.names=FALSE)
   
